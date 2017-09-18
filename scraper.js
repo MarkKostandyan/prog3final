@@ -4,17 +4,21 @@ var jsonfile = require('jsonfile');
 var file = 'scraping.json';
 
 
-scrapeIt("https://www.menu.am/restaurant/type/pizza.html", {
-    title: ".logoBlock img"
-  , desc: ".header h2"
-  , avatar: {
-        selector: ".header img"
-      , attr: "src"
+scrapeIt("https://www.menu.am/restaurant/type.html", {
+    restaurant: {
+        listItem: "div.restaurants_grid > div.item",
+        data: {
+            name: ".list-title > a",
+            url: {
+                selector: "a"
+              , attr: "href"
+            },
+            tag: ".list-title > span"
+        }
     }
-}).then(function(page) {
-    console.log(page);
-    jsonfile.writeFile(file,page,{spaces:2},function(err){
-        console.error(err)
-
+}).then(function (page) {
+        console.log(page);
+        jsonfile.writeFile(file, page, { spaces: 2 }, function (err) {
+            console.error(err);
+        });
     });
-});
