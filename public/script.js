@@ -44,29 +44,21 @@ function drawPieChart() {
         success: function (jsonData) {
             var data = new google.visualization.DataTable();
             w = []
-            q = []
             data.addColumn('string', 'Element');
             data.addColumn('number', 'Numbers');
             for (var i = 0; i < jsonData.length; i++) {
                 if (parseFloat(jsonData[i].rating) > 80 && parseFloat(jsonData[i].rating) < 90)
-                w.push(jsonData[i].rating)
+                    w.push(jsonData[i].rating)
             }
-
-
             var count = {};
             w.forEach(function (i) { count[i] = (count[i] || 0) + 1; });
-
             r = 0;
-
-
             for (i in count) {
                 data.addRows([
                     [i, count[i]],
                 ]);
                 r++
             }
-
-
             var options = {
                 legend: 'left',
                 title: 'All companies',
