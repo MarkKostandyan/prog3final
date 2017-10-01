@@ -48,7 +48,8 @@ function drawPieChart() {
             data.addColumn('string', 'Element');
             data.addColumn('number', 'Numbers');
             for (var i = 0; i < jsonData.length; i++) {
-                w.push(jsonData[i].name)
+                if (parseFloat(jsonData[i].rating) > 80 && parseFloat(jsonData[i].rating) < 90)
+                w.push(jsonData[i].rating)
             }
 
 
