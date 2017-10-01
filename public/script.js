@@ -1,50 +1,75 @@
 google.charts.load('45', { packages: ['corechart', 'table', 'geochart'] });
 
 google.charts.setOnLoadCallback(drawTable);
-google.charts.setOnLoadCallback(drawPieChart);
+//google.charts.setOnLoadCallback(drawPieChart);
 google.charts.setOnLoadCallback(drawColumnChart);
 
 
 function drawColumnChart() {
-    var data = google.visualization.arrayToDataTable([
-        ['Year', 'Sales', 'Expenses'],
-        ['2004', 100, 0],
-        ['2005', 117, 0],
-        ['2006', 66, 0],
-        ['2007', 103, 0],
-        ['2007', 103, 0]
-    ]);
+    $.ajax({
+        url: "/restaurant",
+        dataType: "json",
+        success: function (jsonData) {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Restaurant');
+            data.addColumn('number', 'Rating');
 
-    var options = {
-        title: 'Top 5 Restaurants',
-        hAxis: { title: 'Name', titleTextStyle: { color: 'red' } }
-    };
+            for (var i = 0; i < jsonData.length; i++) {
+                if (parseFloat(jsonData[i].rating) > 96 && parseFloat(jsonData[i].rating) < 99) {
+                    data.addRow([
+                        jsonData[i].name,
+                        parseFloat(jsonData[i].rating),
+                    ]);
+                }
+            }
 
-    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div1'));
-    chart.draw(data, options);
+            var options = {
+                title: 'Restaurants',
+                hAxis: { title: 'Top 5 Restaurants', titleTextStyle: { color: 'red' } }
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div1'));
+            chart.draw(data, options);
+
+        }
+
+    });
+
 }
 
 function drawPieChart() {
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Element');
-    data.addColumn('number', 'Percentage');
-    data.addRows([
-        ['Nitrogen', 0.78],
-        ['Oxygen', 0.21],
-        ['Other', 0.01]
-    ]);
+    $.ajax({
+        url: "/restaurant",
+        dataType: "json",
+        success: function (jsonData) {
+            var data = new google.visualization.DataTable();
+            r = []
+            q = []
+            data.addColumn('string', 'Element');
+            data.addColumn('number', 'Percentage');
+            for (var i = 0; i < jsonData.length; i++) {
+                r.push(jsonData[i].name)
+            }
 
-    var options = {
-        legend: 'left',
-        title: 'Air Composition',
-        is3D: false,
-        width: '100%',
-        height: '100%'
-    };
-    //console.log(data.toJSON());
-    // Instantiate and draw the chart.
-    var chart = new google.visualization.PieChart(document.getElementById('chart_div0'));
-    chart.draw(data, options);
+            data.addRows([
+                ['w', 0.78],
+                ['Oxygen', 0.21],
+                ['Other', 0.01]
+            ]);
+
+            var options = {
+                legend: 'left',
+                title: 'All companies',
+                is3D: false,
+                width: '100%',
+                height: '100%'
+            };
+            //console.log(data.toJSON());
+            // Instantiate and draw the chart.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div0'));
+            chart.draw(data, options);
+        }
+    });
 }
 
 function drawTable() {
@@ -81,7 +106,7 @@ function drawTable() {
 }
 
 $(window).resize(function () {
-    drawPieChart();
+    //drawPieChart();
     drawColumnChart();
     /*drawAreaChart();
     drawRegionsMap();*/
