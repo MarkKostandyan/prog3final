@@ -47,7 +47,7 @@ function drawPieChart() {
             data.addColumn('string', 'Element');
             data.addColumn('number', 'Numbers');
             for (var i = 0; i < jsonData.length; i++) {
-                if (parseFloat(jsonData[i].rating) > 80 && parseFloat(jsonData[i].rating) < 90)
+                if (parseFloat(jsonData[i].rating) > 80 && parseFloat(jsonData[i].rating) <= 90)
                     w.push(jsonData[i].rating)
             }
             var count = {};
@@ -61,7 +61,7 @@ function drawPieChart() {
             }
             var options = {
                 legend: 'left',
-                title: 'All companies',
+                title: 'Ratings for Restaurants',
                 is3D: true,
                 width: '100%',
                 height: '100%'
@@ -73,42 +73,6 @@ function drawPieChart() {
         }
     });
 }
-
-/*function drawPieChart() {
-    $.ajax({
-        url: "/restaurant",
-        dataType: "json",
-        success: function (jsonData) {
-            var data = new google.visualization.DataTable();
-            r = []
-            q = []
-            data.addColumn('string', 'Element');
-            data.addColumn('number', 'Percentage');
-            for (var i = 0; i < jsonData.length; i++) {
-                r.push(jsonData[i].name)
-            }
-            console.log(r)
-            data.addRows([
-                ['w', 0.78],
-                ['Oxygen', 0.21],
-                ['Other', 0.01]
-            ]);
-
-            var options = {
-                legend: 'left',
-                title: 'All companies',
-                is3D: true,
-                width: '100%',
-                height: '100%'
-            };
-            //console.log(data.toJSON());
-            // Instantiate and draw the chart.
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div0'));
-            chart.draw(data, options);
-        }
-    });
-}*/
-
 
 function drawTable() {
     $.ajax({
