@@ -1,7 +1,7 @@
 google.charts.load('45', { packages: ['corechart', 'table', 'geochart'] });
 
 google.charts.setOnLoadCallback(drawTable);
-//google.charts.setOnLoadCallback(drawPieChart);
+google.charts.setOnLoadCallback(drawPieChart);
 google.charts.setOnLoadCallback(drawColumnChart);
 
 
@@ -25,7 +25,7 @@ function drawColumnChart() {
 
             var options = {
                 title: 'Restaurants',
-                hAxis: { title: 'Top 5 Restaurants', titleTextStyle: { color: 'red' } }
+                hAxis: { title: 'Top 5 Restaurants', titleTextStyle: { color: 'blue' } }
             };
 
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div1'));
@@ -43,24 +43,33 @@ function drawPieChart() {
         dataType: "json",
         success: function (jsonData) {
             var data = new google.visualization.DataTable();
-            r = []
+            w = []
             q = []
             data.addColumn('string', 'Element');
-            data.addColumn('number', 'Percentage');
+            data.addColumn('number', 'Numbers');
             for (var i = 0; i < jsonData.length; i++) {
-                r.push(jsonData[i].name)
+                w.push(jsonData[i].name)
             }
 
-            data.addRows([
-                ['w', 0.78],
-                ['Oxygen', 0.21],
-                ['Other', 0.01]
-            ]);
+
+            var count = {};
+            w.forEach(function (i) { count[i] = (count[i] || 0) + 1; });
+
+            r = 0;
+
+
+            for (i in count) {
+                data.addRows([
+                    [i, count[i]],
+                ]);
+                r++
+            }
+
 
             var options = {
                 legend: 'left',
                 title: 'All companies',
-                is3D: false,
+                is3D: true,
                 width: '100%',
                 height: '100%'
             };
@@ -71,6 +80,42 @@ function drawPieChart() {
         }
     });
 }
+
+/*function drawPieChart() {
+    $.ajax({
+        url: "/restaurant",
+        dataType: "json",
+        success: function (jsonData) {
+            var data = new google.visualization.DataTable();
+            r = []
+            q = []
+            data.addColumn('string', 'Element');
+            data.addColumn('number', 'Percentage');
+            for (var i = 0; i < jsonData.length; i++) {
+                r.push(jsonData[i].name)
+            }
+            console.log(r)
+            data.addRows([
+                ['w', 0.78],
+                ['Oxygen', 0.21],
+                ['Other', 0.01]
+            ]);
+
+            var options = {
+                legend: 'left',
+                title: 'All companies',
+                is3D: true,
+                width: '100%',
+                height: '100%'
+            };
+            //console.log(data.toJSON());
+            // Instantiate and draw the chart.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div0'));
+            chart.draw(data, options);
+        }
+    });
+}*/
+
 
 function drawTable() {
     $.ajax({
@@ -106,7 +151,7 @@ function drawTable() {
 }
 
 $(window).resize(function () {
-    //drawPieChart();
+    drawPieChart();
     drawColumnChart();
     /*drawAreaChart();
     drawRegionsMap();*/
