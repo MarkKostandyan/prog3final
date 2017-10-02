@@ -1,3 +1,5 @@
+//github: https://github.com/MarkKostandyan/prog3final
+//heroku: http://programming3.herokuapp.com/
 google.charts.load('45', { packages: ['corechart', 'table', 'geochart'] });
 
 google.charts.setOnLoadCallback(drawTable);
